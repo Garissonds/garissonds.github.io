@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>IPv6 Leaks: Is Your VPN Truly Protecting You? — Quiet Wire</title>
+<link rel="canonical" href="https://garissonds.github.io/ipv6-leaks-is-your-vpn-truly-protecting-you/">
+<link rel="alternate" type="application/rss+xml" title="Quiet Wire" href="https://garissonds.github.io/feed.xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "IPv6 Leaks: Is Your VPN Truly Protecting You?", "datePublished": "2026-10-11", "author": {"@type": "Organization", "name": "Quiet Wire"}, "publisher": {"@type": "Organization", "name": "Quiet Wire"}, "mainEntityOfPage": "https://garissonds.github.io/ipv6-leaks-is-your-vpn-truly-protecting-you/"}</script>
+<style>*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fbfaf7;color:#1f2328;font:18px/1.65 Georgia, 'Iowan Old Style', serif}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+header.site{border-bottom:1px solid #e6e1d8;padding:28px 0 18px;margin-bottom:34px}
+header.site a.brand{font:700 1.35rem/1.2 system-ui, sans-serif;color:#1f2328;text-decoration:none}
+header.site p{margin:.35rem 0 0;color:#6b6b6b;font:15px/1.5 system-ui, sans-serif}
+nav{margin-top:.7rem;font:14px system-ui, sans-serif}nav a{color:#6b6b6b;margin-right:1.1rem;text-decoration:none}
+nav a:hover{color:#8a3b12}a{color:#8a3b12}
+h1{font:700 2.05rem/1.2 system-ui, sans-serif;margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font:700 1.35rem/1.3 system-ui, sans-serif;margin:2.1rem 0 .6rem}h3{font:600 1.1rem/1.35 system-ui, sans-serif;margin:1.6rem 0 .4rem}
+.meta{color:#6b6b6b;font:14px system-ui, sans-serif;margin-bottom:1.6rem}
+blockquote{margin:1.2rem 0;padding:.2rem 1.1rem;border-left:3px solid #8a3b12;color:#6b6b6b}
+table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.92em}
+th,td{border:1px solid #e6e1d8;padding:7px 10px;text-align:left;vertical-align:top}
+ul.posts{list-style:none;padding:0}ul.posts li{margin:0 0 1.6rem}
+ul.posts a.t{font:600 1.15rem/1.35 system-ui, sans-serif;text-decoration:none;color:#1f2328}
+ul.posts a.t:hover{color:#8a3b12}ul.posts p{margin:.3rem 0 0;color:#6b6b6b;font-size:.95em}
+ul.posts time{font:13px system-ui, sans-serif;color:#6b6b6b}
+footer.site{border-top:1px solid #e6e1d8;margin:56px 0 0;padding:20px 0 40px;color:#6b6b6b;font:14px/1.5 system-ui, sans-serif}
+hr{border:0;border-top:1px solid #e6e1d8;margin:2rem 0}code{font-size:.9em}
+</style></head>
+<body><div class="wrap">
+<header class="site"><a class="brand" href="https://garissonds.github.io/">Quiet Wire</a><p>Notes on VPN security, privacy law and the difference between a marketing claim and a verifiable one.</p><nav><a href="https://garissonds.github.io/">Articles</a><a href="https://garissonds.github.io/about/">About</a><a href="https://garissonds.github.io/feed.xml">RSS</a></nav></header>
+<main><article><h1>IPv6 Leaks: Is Your VPN Truly Protecting You?</h1><div class="meta">October 11, 2026 · Quiet Wire</div>
+<p>Even when a VPN is active, traffic using the newer IPv6 protocol can slip past the tunnel and reveal the address assigned by your ISP. This bypasses the privacy most users expect from a VPN service.</p>
+<h2>Why IPv6 Traffic Might Bypass Your VPN</h2>
+<p>IPv4, the protocol dominant on the internet since the 1980s, uses 32-bit addresses and is limited to about 4.3 billion unique identifiers. IPv6 replaces this with 128-bit addresses, resolving the shortage and enabling more efficient routing. With many ISPs now assigning IPv6 prefixes to residential customers, a typical home connection carries approximately 70% of its traffic over IPv6, according to recent broadband adoption reports.</p>
+<p>Many VPN implementations were developed when IPv4 was dominant. Their tunnel-encapsulation code often matches only IPv4 packets, leaving IPv6 packets untouched. When the operating system encounters an IPv6 address on the local interface, it sends those packets directly to the ISP’s router instead of through the VPN tunnel. The result is a “leak”: the remote server receives the user’s true IPv6 address, while the IPv4 connection remains hidden behind the VPN.</p>
+<p>The practical impact is subtle but measurable. A user browsing a site that prefers IPv6 may not notice the switch, yet the site logs the ISP-assigned address. Correlating that address with other online activity can reconstruct a user’s profile even with the VPN active.</p>
+<h2>How VPN Providers Handle IPv6</h2>
+<p>VPN operators use three main strategies:</p>
+<ol>
+<li><strong>Block IPv6 outright</strong> – The client disables the IPv6 adapter or adds firewall rules to drop any IPv6 packets before they leave the device. This prevents any IPv6 traffic from exiting but also blocks access to IPv6-only services.</li>
+<li><strong>Tunnel IPv6 alongside IPv4</strong> – Some providers use a dual-stack tunnel, encapsulating IPv6 packets within the same encrypted channel as IPv4. This requires the provider’s servers to have public IPv6 addresses and to maintain routing tables for the client’s IPv6 prefix.</li>
+<li><strong>No IPv6 support</strong> – The VPN client leaves the host’s IPv6 stack untouched and offers no explicit guidance. In this scenario, any IPv6 traffic follows the default route through the ISP, creating a leak for users whose routers or operating systems have IPv6 enabled.</li>
+</ol>
+<p>When evaluating a service, look for a clear statement like “IPv6 traffic is blocked by default and can be enabled in the settings” or “IPv6 is routed through our global network.” An absence of information should be considered a warning sign, as the provider may be unaware of the issue.</p>
+<h2>Detecting an IPv6 VPN Leak</h2>
+<p>A systematic leak test can be performed with only a web browser:</p>
+<ol>
+<li><strong>Connect to the VPN</strong> – Confirm the client shows an active connection and that the advertised IPv4 address belongs to the VPN’s network.</li>
+<li><strong>Open an IPv6 leak test page</strong> – The page will display two addresses: the detected IPv4 address and the detected IPv6 address, if present.</li>
+<li><strong>Compare the results</strong> –<ul>
+<li>If the displayed IPv6 address is within the VPN’s advertised range (often a different prefix than the ISP’s), the tunnel is handling IPv6 correctly.</li>
+<li>If the IPv6 address belongs to the ISP’s allocation (identifiable by the prefix, e.g., 2001:0db8::/32 for many US providers), the VPN is not routing IPv6, and a leak exists.</li>
+</ul>
+</li>
+<li><strong>Repeat on different networks</strong> – Test from a mobile hotspot, public Wi-Fi, and a home router to ensure consistency.</li>
+</ol>
+<p>A concrete example: after connecting to “Provider X,” the IPv4 test shows 203.0.113.45 (the provider’s server). The IPv6 section displays 2600:3c01::f03c:91ff:fe6a:5a2e, which belongs to the user’s ISP prefix 2600:3c00::/24. This mismatch indicates an IPv6 leak.</p>
+<h2>Configuring Your Router for Security</h2>
+<p>Most consumer routers offer an option to disable IPv6. Turning off this feature forces all devices on the LAN to use IPv4, eliminating the leak vector at the network edge. Typical steps include:</p>
+<ol>
+<li>Log into the router’s web interface.</li>
+<li>Navigate to the <strong>WAN</strong> or <strong>Internet</strong> settings page.</li>
+<li>Find the <strong>IPv6</strong> toggle and set it to <strong>Disabled</strong>.</li>
+<li>Save the configuration and restart the router.</li>
+</ol>
+<p>If you wish to keep IPv6 enabled for specific services, configure a firewall rule to block outbound IPv6 traffic unless it originates from the VPN client’s internal address range. Some routers also provide <strong>VPN Passthrough</strong> or <strong>IPv6 Firewall</strong> settings to drop non-tunneled IPv6 packets.</p>
+<p>On the client side, most desktop VPN applications include an “IPv6 leak protection” checkbox. Ensure it is enabled; otherwise, the software may only affect the IPv4 adapter. Manually disabling IPv6 on each device via the operating system’s network settings is possible but labor-intensive and can break applications reliant on IPv6 (e.g., some video-conferencing tools).</p>
+<h2>Choosing a VPN with Robust Protection</h2>
+<p>When evaluating a VPN for IPv6 security, apply these criteria:</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Criterion</th>
+<th style="text-align: left;">What to look for</th>
+<th style="text-align: left;">How to verify</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">IPv6 policy</td>
+<td style="text-align: left;">Explicit statement of block, tunnel, or no-support</td>
+<td style="text-align: left;">Review the provider’s FAQ or technical documentation; test with the steps above</td>
+</tr>
+<tr>
+<td style="text-align: left;">Built-in IPv6 kill switch</td>
+<td style="text-align: left;">Feature that disables all network traffic if the VPN drops, covering IPv4/IPv6</td>
+<td style="text-align: left;">Enable the kill switch, disconnect the VPN, and confirm both address families become unavailable</td>
+</tr>
+<tr>
+<td style="text-align: left;">Independent audit</td>
+<td style="text-align: left;">Third-party audit covering IPv6 handling (e.g., code review of tunneling module)</td>
+<td style="text-align: left;">Check audit reports on the provider’s site; look for discussions of dual-stack traffic</td>
+</tr>
+<tr>
+<td style="text-align: left;">Server infrastructure</td>
+<td style="text-align: left;">Presence of IPv6 addresses on exit nodes</td>
+<td style="text-align: left;">Use a command-line lookup (e.g., <code>dig AAAA &lt;vpn-hostname&gt;</code>) to check server IPv6 resolution</td>
+</tr>
+<tr>
+<td style="text-align: left;">Jurisdiction &amp; logging</td>
+<td style="text-align: left;">Laws that may compel disclosure of connection logs, including IPv6 metadata</td>
+<td style="text-align: left;">Consult the provider’s privacy policy; verify no traffic logs beyond a minimal session ID</td>
+</tr>
+</tbody>
+</table>
+<p>A practical selection workflow:</p>
+<ol>
+<li><strong>Read the privacy policy</strong> – Confirm no logging of IP addresses, including IPv6, and that the jurisdiction doesn&rsquo;t mandate data retention.</li>
+<li><strong>Check server lists</strong> – Verify at least one server in your preferred region lists an IPv6 address.</li>
+<li><strong>Run the leak test</strong> – Perform the IPv6 test before and after enabling the provider’s IPv6 leak protection.</li>
+<li><strong>Inspect the kill switch</strong> – Disconnect the VPN and confirm both IPv4 and IPv6 interfaces lose connectivity (e.g., <code>ping -6 google.com</code> fails).</li>
+</ol>
+<p>Only providers passing all four steps should be considered robust against IPv6 leaks.</p>
+<h2>Key Takeaways</h2>
+<ul>
+<li>IPv6 traffic can bypass VPNs, exposing your real IP address.</li>
+<li>Check your VPN provider&rsquo;s IPv6 handling and test for leaks regularly.</li>
+<li>Look for VPNs with explicit IPv6 leak protection and kill switches.</li>
+<li>Router settings can affect IPv6 security, even without a VPN.</li>
+</ul>
+<h2>Frequently Asked Questions</h2>
+<h3>Is IPv6 a security risk on its own?</h3>
+<p>No, IPv6 is not inherently insecure. The protocol includes built-in encryption for certain control messages and a larger address space that thwarts some scanning techniques. However, many VPNs have not fully integrated IPv6 support, creating privacy gaps that can be exploited.</p>
+<h3>What if my ISP doesn&rsquo;t provide IPv6?</h3>
+<p>If your ISP provides only IPv4, an IPv6 leak is not possible on that connection. Nevertheless, the trend is toward universal IPv6 rollout, and many mobile carriers already deliver IPv6. Preparing for IPv6 protection now prevents future exposure.</p>
+<h3>Can I just turn off IPv6 on my devices?</h3>
+<p>Disabling IPv6 on individual devices is possible via network adapter settings, but it requires repeating the change on every computer, phone, and IoT gadget. Some newer services, like certain cloud storage APIs, may reject IPv4-only connections, causing functionality loss. Implementing the block at the router level offers a single point of control and is generally more reliable.</p>
+<hr />
+<p><em>This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.</em></p></article></main>
+<footer class="site">This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.<br>© 2026 Quiet Wire</footer>
+</div></body></html>
