@@ -1,0 +1,140 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>DNS Encryption: Protecting Your Browsing from Prying Eyes — Quiet Wire</title>
+<link rel="canonical" href="https://garissonds.github.io/dns-encryption-protecting-your-browsing-from-prying-eyes/">
+<link rel="alternate" type="application/rss+xml" title="Quiet Wire" href="https://garissonds.github.io/feed.xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "DNS Encryption: Protecting Your Browsing from Prying Eyes", "datePublished": "2026-10-22", "author": {"@type": "Organization", "name": "Quiet Wire"}, "publisher": {"@type": "Organization", "name": "Quiet Wire"}, "mainEntityOfPage": "https://garissonds.github.io/dns-encryption-protecting-your-browsing-from-prying-eyes/"}</script>
+<style>*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fbfaf7;color:#1f2328;font:18px/1.65 Georgia, 'Iowan Old Style', serif}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+header.site{border-bottom:1px solid #e6e1d8;padding:28px 0 18px;margin-bottom:34px}
+header.site a.brand{font:700 1.35rem/1.2 system-ui, sans-serif;color:#1f2328;text-decoration:none}
+header.site p{margin:.35rem 0 0;color:#6b6b6b;font:15px/1.5 system-ui, sans-serif}
+nav{margin-top:.7rem;font:14px system-ui, sans-serif}nav a{color:#6b6b6b;margin-right:1.1rem;text-decoration:none}
+nav a:hover{color:#8a3b12}a{color:#8a3b12}
+h1{font:700 2.05rem/1.2 system-ui, sans-serif;margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font:700 1.35rem/1.3 system-ui, sans-serif;margin:2.1rem 0 .6rem}h3{font:600 1.1rem/1.35 system-ui, sans-serif;margin:1.6rem 0 .4rem}
+.meta{color:#6b6b6b;font:14px system-ui, sans-serif;margin-bottom:1.6rem}
+blockquote{margin:1.2rem 0;padding:.2rem 1.1rem;border-left:3px solid #8a3b12;color:#6b6b6b}
+table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.92em}
+th,td{border:1px solid #e6e1d8;padding:7px 10px;text-align:left;vertical-align:top}
+ul.posts{list-style:none;padding:0}ul.posts li{margin:0 0 1.6rem}
+ul.posts a.t{font:600 1.15rem/1.35 system-ui, sans-serif;text-decoration:none;color:#1f2328}
+ul.posts a.t:hover{color:#8a3b12}ul.posts p{margin:.3rem 0 0;color:#6b6b6b;font-size:.95em}
+ul.posts time{font:13px system-ui, sans-serif;color:#6b6b6b}
+footer.site{border-top:1px solid #e6e1d8;margin:56px 0 0;padding:20px 0 40px;color:#6b6b6b;font:14px/1.5 system-ui, sans-serif}
+hr{border:0;border-top:1px solid #e6e1d8;margin:2rem 0}code{font-size:.9em}
+</style></head>
+<body><div class="wrap">
+<header class="site"><a class="brand" href="https://garissonds.github.io/">Quiet Wire</a><p>Notes on VPN security, privacy law and the difference between a marketing claim and a verifiable one.</p><nav><a href="https://garissonds.github.io/">Articles</a><a href="https://garissonds.github.io/about/">About</a><a href="https://garissonds.github.io/feed.xml">RSS</a></nav></header>
+<main><article><h1>DNS Encryption: Protecting Your Browsing from Prying Eyes</h1><div class="meta">October 22, 2026 · Quiet Wire</div>
+<p>Every time a browser looks up a name like <strong>example.com</strong>, it sends a plain-text request to a DNS resolver. This request can be read by any device on the path – the ISP, a corporate firewall, or a malicious Wi-Fi hotspot. DNS encryption masks these lookups, preventing casual eavesdropping while leaving other connection parts exposed. Below is a breakdown of how the two main protocols work, what they cannot conceal, and how to set them up alongside a VPN.</p>
+<h2>What is DNS and Why Encrypt It?</h2>
+<p>DNS (Domain Name System) acts as the internet&rsquo;s phone book. When you type a URL, your device asks a resolver to translate the domain name into an IP address, typically a four-octet IPv4 value or a 128-bit IPv6 value. The query and its answer travel in clear text over UDP (port 53) or TCP (port 53) unless a protective layer is added.</p>
+<p>Because the query contains the exact domain name you are visiting, anyone sniffing the traffic sees a list of your intended destinations. In most residential setups, the ISP runs the first resolver, allowing it to compile a daily log of every hostname you look up. For privacy-focused users, this is a significant leakage vector. Research indicates over 90% of browsers still use unencrypted DNS by default, meaning roughly 99% of everyday web sessions reveal the domain name in clear text.</p>
+<p>Encrypting DNS removes that visibility. The query is wrapped in a cryptographic tunnel, so an observer sees only “some DNS traffic” occurring, not the specific name being resolved. This protection is comparable to HTTPS for web pages: the content remains accessible, but the request itself is hidden.</p>
+<h2>DNS over HTTPS (DoH) Explained</h2>
+<p>DoH tunnels DNS queries within ordinary HTTPS traffic. From a network perspective, the packets appear as standard web requests to port 443, using the same TLS handshake and HTTP/2 framing.</p>
+<ul>
+<li><strong>Indistinguishability</strong> – Because the payload is encrypted and the outer layer is HTTPS, deep-packet inspection (DPI) tools cannot reliably distinguish DoH from regular browsing. This makes blocking or throttling DoH harder for network administrators.</li>
+<li><strong>Browser integration</strong> – Chrome, Firefox, and Edge offer DoH settings within their native preferences. When enabled, these browsers send all resolution requests to a configured DoH endpoint, falling back to the system resolver only if the HTTPS connection fails.</li>
+<li><strong>Provider ecosystem</strong> – Privacy-oriented DNS operators like Cloudflare and Google publish public DoH URLs (e.g., <code>https://dns.cloudflare.com/dns-query</code>). These URLs are static, versioned, and served over TLS with strong cipher suites (TLS 1.3 is typical).</li>
+</ul>
+<p>A practical example: A user on public Wi-Fi enables DoH in Firefox and selects Cloudflare’s endpoint. When the browser looks up <code>news.example.com</code>, the client establishes a TLS-encrypted TCP session to <code>1.1.1.1:443</code>. It then sends an HTTP GET request with the DNS query encoded in the URL and receives the answer in the HTTP response body. A network monitor observes only “TLS handshake to 1.1.1.1” and “HTTPS GET /dns-query”, not the domain name.</p>
+<h2>DNS over TLS (DoT) Explained</h2>
+<p>DoT isolates DNS traffic within its own TLS session on a dedicated port (853). The protocol, defined by RFC 7858, mirrors the security properties of HTTPS but lacks the HTTP framing layer.</p>
+<ul>
+<li><strong>Dedicated port</strong> – Since DoT consistently uses port 853, firewalls can identify the traffic more easily than DoH. However, the TLS layer still encrypts the payload. Some corporate networks deliberately block port 853 to enforce plain UDP DNS, potentially making DoT less reliable on restrictive networks.</li>
+<li><strong>Strong encryption</strong> – DoT implementations typically enforce TLS 1.2 or higher and require forward-secret cipher suites. The client validates the server&rsquo;s CA-signed certificate, preventing man-in-the-middle attacks.</li>
+<li><strong>System-wide configuration</strong> – Operating systems such as Android 9+, Windows 10 (1709+), and recent Linux distributions include native DoT support. Users can direct the system resolver to a DoT server (e.g., <code>dot.cloudflare.net</code>), allowing all applications relying on the OS resolver to benefit automatically.</li>
+</ul>
+<p>In practice, a Linux machine with <code>systemd-resolved</code> configured for DoT opens a TLS session to the resolver on port 853, sends a DNS message wrapped in the TLS record, and receives the encrypted answer. No HTTP headers are involved, reducing overhead compared to DoH. However, the dedicated port can serve as a visibility cue for network filtering.</p>
+<h2>What DNS Encryption Can&rsquo;t Hide</h2>
+<p>Encryption prevents the <em>content</em> of the query from being read but does not make the query invisible to the resolver itself. The resolver you configure – whether Cloudflare, Google, or a self-hosted server – still sees every domain name you request. Privacy therefore depends on the resolver’s logging policy and jurisdiction.</p>
+<ul>
+<li><strong>Resolver insight</strong> – A reputable resolver will maintain minimal logs, often just timestamps and aggregated statistics. You can verify a provider’s policy by reviewing its published privacy statement or checking for third-party audits like SOC 2 Type II.</li>
+<li><strong>Encrypted Client Hello (ECH) and SNI</strong> – Even with DoH/DoT, the TLS handshake reveals the server name you are contacting (SNI). Newer extensions like Encrypted Client Hello aim to hide this value, but adoption is still limited. Until ECH is widely deployed, a passive observer can still infer which DNS provider you are using.</li>
+<li><strong>VPN interaction</strong> – If a VPN routes all traffic through its tunnel, the VPN exit node still receives DNS packets unless the client explicitly forces DNS queries over the encrypted channel <em>within</em> the tunnel. Misconfiguration can lead to “DNS leaks,” where the device reverts to the ISP’s resolver.</li>
+<li><strong>Website visibility</strong> – After a successful DNS lookup, the subsequent TCP/QUIC connection to the target server includes your public IP address. Neither DoH nor DoT hides this IP from the destination site or from any ISP that can observe the flow of encrypted packets to the server’s IP.</li>
+</ul>
+<p>DNS encryption is a <em>layer</em> of protection, not a complete shield. It should be used alongside a trustworthy DNS provider and, where possible, a VPN that enforces DNS tunneling.</p>
+<h2>Configuring DNS Encryption</h2>
+<table>
+<thead>
+<tr>
+<th>Platform</th>
+<th>DoH Support</th>
+<th>DoT Support</th>
+<th>Typical Steps</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>Windows 10/11</td>
+<td>Settings → Network → Advanced DNS</td>
+<td>Settings → Network → Advanced DNS</td>
+<td>Choose “Encrypted DNS” and enter provider URL or IP address.</td>
+</tr>
+<tr>
+<td>macOS (Ventura+)</td>
+<td>System Preferences → Network → DNS (via UI or <code>networksetup</code>)</td>
+<td>System Preferences → Network → DNS (via UI or <code>networksetup</code>)</td>
+<td>Use <code>networksetup -setdnsservers</code> with <code>dns.cloudflare.com</code> and enable “Secure DNS”.</td>
+</tr>
+<tr>
+<td>Linux (systemd-resolved)</td>
+<td><code>/etc/systemd/resolved.conf</code> (<code>DNSOverTLS=yes</code>, <code>DNS=</code>)</td>
+<td>Same file (<code>DNSOverTLS=yes</code>)</td>
+<td>Edit the file, set <code>DNS=</code> to the resolver’s IP, restart <code>systemd-resolved</code>.</td>
+</tr>
+<tr>
+<td>Android 9+</td>
+<td>Settings → Network → Advanced → Private DNS (hostname)</td>
+<td>Same UI (enter <code>dns.google</code>)</td>
+<td>Enter the provider’s hostname (e.g., <code>dns.google</code>).</td>
+</tr>
+<tr>
+<td>iOS 14+</td>
+<td>Settings → Wi-Fi → Info → Configure DNS (Manual)</td>
+<td>No native DoT UI</td>
+<td>Add a DoH server address in the “Configure DNS” section.</td>
+</tr>
+</tbody>
+</table>
+<h3>Browser-level activation</h3>
+<ol>
+<li><strong>Chrome</strong> – Open <code>chrome://settings/security</code>, enable “Use secure DNS” and select a provider or enter a custom DoH URL.</li>
+<li><strong>Firefox</strong> – Navigate to <code>about:preferences#privacy</code>, scroll to “Network Settings”, check “Enable DNS over HTTPS” and pick a preset or custom endpoint.</li>
+<li><strong>Edge</strong> – Go to Settings → Privacy, search, and services, turn on “Use secure DNS to specify how to lookup the network address for websites”.</li>
+</ol>
+<h3>Router-level configuration</h3>
+<p>Some modern firmware (e.g., OpenWrt, AsusWRT) includes a “DNS over TLS” option. Entering the resolver’s hostname and port here forces every LAN device using the router’s DHCP-provided DNS to benefit from DoT automatically, provided the devices themselves do not override these settings.</p>
+<h3>Verification</h3>
+<p>After configuration, run a DNS leak test. The test site displays the IP addresses of the resolvers it detects. If these IPs match your chosen provider and no ISP addresses appear, the encryption is active. Repeat this check on multiple devices and networks for consistency.</p>
+<h2>DNS Encryption and Your VPN</h2>
+<p>Most commercial VPN services operate their own DNS resolvers, accessible only through the encrypted tunnel. When you connect, the VPN client replaces your system&rsquo;s DNS servers with the provider’s internal addresses.</p>
+<ul>
+<li><strong>Choose the right mode</strong> – Some VPN apps offer a toggle between “Use VPN DNS” and “Use custom DNS.” Selecting the VPN’s own servers ensures DNS queries remain within the tunnel. If you prefer an external DoH/DoT provider, manually configure the client’s DNS settings instead of using the default.</li>
+<li><strong>Leak protection</strong> – A well-implemented VPN binds DNS traffic to the tunnel interface (e.g., <code>tun0</code>). You can verify this by checking the routing table (<code>ip route show</code>) and confirming that DNS server IPs resolve to the VPN’s internal subnet.</li>
+<li><strong>Policy audit</strong> – Review the VPN’s privacy policy for statements on DNS logging. Look for independent audits (e.g., no-logs audits by reputable firms) and understand the jurisdiction under which logs might be compelled. A provider based in a 14-Eyes country may face broader data-sharing requests.</li>
+</ul>
+<p>In practice, a user on a Windows machine connects to a VPN advertising “Zero-log DNS.” The client automatically sets the DNS to <code>10.8.0.1</code> (the VPN’s internal resolver). The user then uses a leak test to confirm that only the VPN’s IP is visible, ensuring no fallback to the ISP’s resolver occurs.</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>Encrypting DNS queries with DoH or DoT protects your browsing activity from local network observers and ISPs.</li>
+<li>DoH uses HTTPS, while DoT uses a dedicated TLS port for encryption.</li>
+<li>DNS encryption does not hide your destination IP address from the website or your ISP.</li>
+<li>Ensure your VPN is configured to use encrypted DNS and prevent leaks.</li>
+</ul>
+<h2>Frequently asked questions</h2>
+<h3>Is DoH or DoT better for privacy?</h3>
+<p>Both offer strong encryption. DoT is generally considered more secure as it uses a dedicated port, while DoH can blend in better with regular traffic but might be easier for networks to block.</p>
+<h3>Can my ISP still see what websites I visit with DoH/DoT?</h3>
+<p>They cannot see the specific DNS queries themselves if encrypted. However, they can still see the IP addresses of the servers you connect to and the volume of traffic.</p>
+<h3>Do I need DoH/DoT if I&rsquo;m using a VPN?</h3>
+<p>Yes, it&rsquo;s recommended. While a VPN encrypts your traffic, ensuring your DNS queries are also encrypted adds another privacy layer and prevents potential DNS leaks.</p>
+<hr />
+<p><em>This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.</em></p></article></main>
+<footer class="site">This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.<br>© 2026 Quiet Wire</footer>
+</div></body></html>
