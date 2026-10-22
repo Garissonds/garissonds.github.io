@@ -1,0 +1,184 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Why One Score Isn&#x27;t Enough for VPNs — Quiet Wire</title>
+<meta name="description" content="We break down how our independent register scores VPNs on security and usability, not just a single rating.">
+<link rel="canonical" href="https://garissonds.github.io/why-one-score-isn-t-enough-for-vpns/">
+<link rel="alternate" type="application/rss+xml" title="Quiet Wire" href="https://garissonds.github.io/feed.xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Why One Score Isn't Enough for VPNs", "datePublished": "2026-10-22", "author": {"@type": "Organization", "name": "Quiet Wire"}, "publisher": {"@type": "Organization", "name": "Quiet Wire"}, "mainEntityOfPage": "https://garissonds.github.io/why-one-score-isn-t-enough-for-vpns/"}</script>
+<style>*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fbfaf7;color:#1f2328;font:18px/1.65 Georgia, 'Iowan Old Style', serif}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+header.site{border-bottom:1px solid #e6e1d8;padding:28px 0 18px;margin-bottom:34px}
+header.site a.brand{font:700 1.35rem/1.2 system-ui, sans-serif;color:#1f2328;text-decoration:none}
+header.site p{margin:.35rem 0 0;color:#6b6b6b;font:15px/1.5 system-ui, sans-serif}
+nav{margin-top:.7rem;font:14px system-ui, sans-serif}nav a{color:#6b6b6b;margin-right:1.1rem;text-decoration:none}
+nav a:hover{color:#8a3b12}a{color:#8a3b12}
+h1{font:700 2.05rem/1.2 system-ui, sans-serif;margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font:700 1.35rem/1.3 system-ui, sans-serif;margin:2.1rem 0 .6rem}h3{font:600 1.1rem/1.35 system-ui, sans-serif;margin:1.6rem 0 .4rem}
+.meta{color:#6b6b6b;font:14px system-ui, sans-serif;margin-bottom:1.6rem}
+blockquote{margin:1.2rem 0;padding:.2rem 1.1rem;border-left:3px solid #8a3b12;color:#6b6b6b}
+table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.92em}
+th,td{border:1px solid #e6e1d8;padding:7px 10px;text-align:left;vertical-align:top}
+ul.posts{list-style:none;padding:0}ul.posts li{margin:0 0 1.6rem}
+ul.posts a.t{font:600 1.15rem/1.35 system-ui, sans-serif;text-decoration:none;color:#1f2328}
+ul.posts a.t:hover{color:#8a3b12}ul.posts p{margin:.3rem 0 0;color:#6b6b6b;font-size:.95em}
+ul.posts time{font:13px system-ui, sans-serif;color:#6b6b6b}
+footer.site{border-top:1px solid #e6e1d8;margin:56px 0 0;padding:20px 0 40px;color:#6b6b6b;font:14px/1.5 system-ui, sans-serif}
+hr{border:0;border-top:1px solid #e6e1d8;margin:2rem 0}code{font-size:.9em}
+</style></head>
+<body><div class="wrap">
+<header class="site"><a class="brand" href="https://garissonds.github.io/">Quiet Wire</a><p>Notes on VPN security, privacy law and the difference between a marketing claim and a verifiable one.</p><nav><a href="https://garissonds.github.io/">Articles</a><a href="https://garissonds.github.io/about/">About</a><a href="https://garissonds.github.io/feed.xml">RSS</a></nav></header>
+<main><article><h1>Why One Score Isn&#x27;t Enough for VPNs</h1><div class="meta">October 22, 2026 · Quiet Wire</div>
+<h2>Why One Score Isn&rsquo;t Enough for VPNs</h2>
+<p>A single star rating is easy to display in an ad banner. The headline “4-star VPN” sounds reassuring, even if the underlying test focused only on one aspect, like “speed on a single server in Berlin.” A single composite number collapses many dimensions—encryption strength, jurisdiction, kill-switch reliability, app design, and support quality—into a black box that hides trade-offs.</p>
+<p>When a user bases a purchase decision on that single score, hidden dimensions can lead to unintended compromises. A VPN that scores high on convenience might run an older OpenVPN implementation with 1024-bit DH parameters, exposing the connection to downgrade attacks. Conversely, a service using the latest WireGuard code with perfect-forward-secrecy may require manual configuration files that most non-technical users cannot edit without risking a broken tunnel.</p>
+<p>Our two-score model separates the technical foundation from the day-to-day experience. The <strong>Security score</strong> measures what the user’s data is exposed to when the tunnel is active. The <strong>Usability score</strong> measures how easy it is for the average consumer to keep that tunnel running. By keeping the numbers separate, we provide a map of the terrain instead of a single point suggesting “all good” or “all bad.”</p>
+<h2>Our Security Scoring: Auditing the Foundation</h2>
+<p>The security score is built on a checklist of objective, reproducible tests. Each test is worth a fixed number of points; the total possible is 5.0. A VPN that fails a test receives zero points for that item; partial compliance receives a proportional fractional score.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Maximum points</th>
+<th>What we test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Protocol implementation</strong></td>
+<td>1.0</td>
+<td>Presence of WireGuard (or WireGuard-compatible) and OpenVPN 2.5+ with AES-256-GCM or ChaCha20-Poly1305 ciphers. We verify that the provider’s client does not downgrade to legacy algorithms without user consent.</td>
+</tr>
+<tr>
+<td><strong>No-logs policy verification</strong></td>
+<td>1.0</td>
+<td>We examine the published policy, request the full legal text, and cross-check with any third-party audit reports. If the policy is independently audited by a recognized firm (e.g., Cure53, Securiti), we award the full point; otherwise we award 0.5 for a publicly posted “no-logs” statement backed by a jurisdiction that does not compel data retention.</td>
+</tr>
+<tr>
+<td><strong>Jurisdiction &amp; data-retention laws</strong></td>
+<td>0.5</td>
+<td>We map the corporate headquarters and the location of the VPN servers that terminate traffic. Services operating solely under the 5-/9-eye countries without an additional “no-log” guarantee lose this half-point.</td>
+</tr>
+<tr>
+<td><strong>DNS/IP leak protection</strong></td>
+<td>0.5</td>
+<td>Using the DNSLeakTest suite, we launch 10 connections with the VPN enabled and inspect DNS queries and outbound IP addresses. If any query resolves to a non-VPN resolver or the public IP appears in more than 2% of the samples, the test fails.</td>
+</tr>
+<tr>
+<td><strong>Kill switch reliability</strong></td>
+<td>0.5</td>
+<td>We disable the VPN interface while a TCP stream is active and monitor packet loss. A functional kill switch must drop &gt; 99% of traffic within 200 ms.</td>
+</tr>
+<tr>
+<td><strong>Cryptographic key handling</strong></td>
+<td>0.5</td>
+<td>We inspect the client code (or publicly released binaries) for forward-secrecy: ephemeral keys must be regenerated for each session, and the client must discard private keys from memory after handshake.</td>
+</tr>
+<tr>
+<td><strong>Independent security audit</strong></td>
+<td>1.0</td>
+<td>If the provider has undergone a full-stack audit by a third-party security firm and the report is publicly available, we award the point. If only a “code review” of the client is published, we award 0.5. No public audit = 0.</td>
+</tr>
+</tbody>
+</table>
+<p>Each VPN receives a raw numeric score (e.g., 3.7 / 5). The score is rounded to the nearest tenth for display. The methodology is documented in detail on our register, and the same checklist is applied to every service we list, regardless of size or price.</p>
+<h2>Our Usability Scoring: Practical User Experience</h2>
+<p>Usability is equally important for privacy because a VPN that users cannot or will not keep active provides no protection. The usability score also runs to a maximum of 5.0 and is derived from hands-on testing across the four major platforms we support.</p>
+<table>
+<thead>
+<tr>
+<th>Criterion</th>
+<th>Maximum points</th>
+<th>What we test</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td><strong>Installation simplicity</strong></td>
+<td>1.0</td>
+<td>We time a first-time user (with no prior VPN experience) from download to first successful connection. ≤ 5 minutes earns the full point; 5-10 minutes earns 0.5; &gt; 10 minutes earns 0.</td>
+</tr>
+<tr>
+<td><strong>App interface clarity</strong></td>
+<td>1.0</td>
+<td>We evaluate the main dashboard for logical grouping of settings (servers, protocols, kill switch). A flat, colour-coded layout with tooltips scores 1.0; nested menus without explanations score 0.5; cluttered or undocumented UI scores 0.</td>
+</tr>
+<tr>
+<td><strong>Connection stability</strong></td>
+<td>1.0</td>
+<td>Over a 30-minute period we log disconnect events while the client runs in the background on a typical home broadband (download 100 Mbps, upload 20 Mbps, latency 30 ms). ≤ 1 disconnect per hour = 1.0; 1-3 disconnects = 0.5; &gt; 3 = 0.</td>
+</tr>
+<tr>
+<td><strong>Speed impact</strong></td>
+<td>1.0</td>
+<td>We run repeated speed tests (using Speedtest CLI) with the VPN on and off. The average download reduction must be ≤ 20% to earn the full point, 20-35% earns 0.5, &gt; 35% earns 0.</td>
+</tr>
+<tr>
+<td><strong>Cross-platform parity</strong></td>
+<td>1.0</td>
+<td>Features available on Windows (e.g., split-tunneling, custom DNS) must also be present on macOS, iOS, and Android. Missing a major feature on any platform deducts 0.5; missing on two or more platforms deducts 1.0.</td>
+</tr>
+</tbody>
+</table>
+<p>The usability test suite is run on fresh operating-system installs to avoid cached credentials or pre-configured routes that could artificially improve scores. All measurements are logged, and any anomalous result is repeated three times before a final value is recorded.</p>
+<h2>The Trade-Offs: Security vs. Usability</h2>
+<p>Because the two scores are kept separate, the tension between them becomes visible at a glance. A provider that pushes the strongest cryptographic suite—WireGuard with mandatory double-hop routing—may require the user to generate separate keys for each hop and to edit a JSON configuration file. In our testing, that service earned a <strong>Security 4.8 / Usability 2.2</strong>. The high security score reflects flawless protocol implementation, a 100% no-logs audit, and a kill switch that cuts traffic in 120 ms. The low usability score arises from a steep learning curve and a lack of a one-click “quick connect” button.</p>
+<p>By contrast, a consumer-oriented service that bundles a single-click connect button, auto-updates, and a built-in server-selection wizard typically scores <strong>Security 3.4 / Usability 4.6</strong>. The security score drops because the provider offers OpenVPN only, with a default cipher of AES-128-CBC (still considered secure but not best-practice) and provides only a self-published no-logs statement without external verification.</p>
+<p>We deliberately avoid averaging the two numbers into a single “overall” rating. An average would mask the fact that the first VPN is unsuitable for a user who needs a simple solution for occasional travel, while the second would be a red flag for a security-focused journalist handling sensitive sources. The separate scores let readers match the product to their threat model.</p>
+<h3>Worked example</h3>
+<p>Suppose a privacy-conscious freelancer is evaluating three services A, B, and C:</p>
+<table>
+<thead>
+<tr>
+<th>Service</th>
+<th>Security</th>
+<th>Usability</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>A</td>
+<td>4.6</td>
+<td>2.5</td>
+</tr>
+<tr>
+<td>B</td>
+<td>3.9</td>
+<td>4.0</td>
+</tr>
+<tr>
+<td>C</td>
+<td>3.2</td>
+<td>3.8</td>
+</tr>
+</tbody>
+</table>
+<p>If the freelancer’s priority is <em>confidential client communication</em> and they are comfortable with a brief initial configuration, Service A is the logical choice despite its lower usability. If the freelancer mostly streams video and only occasionally needs a VPN, Service B provides a more balanced experience. Service C sits in the middle and might be appropriate for users who want a modest security uplift without a steep learning curve.</p>
+<h2>Turning Our Scores into Your Decision</h2>
+<ol>
+<li><strong>Define your priority axis.</strong> Write down the primary reason you need a VPN: avoiding ISP throttling, protecting journalistic sources, bypassing geo-blocks, etc. Rank the importance of security versus convenience on a scale of 1–5.</li>
+<li><strong>Select services that meet the critical threshold.</strong> If your security rating must be at least 4.0, discard any VPN below that line even if its usability is perfect.</li>
+<li><strong>Check the complementary score.</strong> Among the services that meet your primary threshold, compare the secondary score. A 4.0 security / 4.5 usability service is generally preferable to a 4.2 / 3.0 service for most users.</li>
+<li><strong>Inspect the audit details.</strong> Our register links to the underlying test logs, audit reports, and policy documents. Verify that the “no-logs” claim is backed by an independent audit if that matters to you.</li>
+<li><strong>Re-evaluate after major changes.</strong> Providers occasionally add new servers, drop protocols, or change their corporate structure. Our periodic re-scoring ensures that the numbers you rely on remain current.</li>
+</ol>
+<p>By treating the two scores as orthogonal axes rather than a single composite, you can spot the sweet spot that matches your technical ability and threat landscape.</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>HushFleet uses two independent scores: Security and Usability.</li>
+<li>Our method avoids averaging to show the critical trade-offs between technical protection and user experience.</li>
+<li>Analyze each score individually based on your needs; a high security score with a moderate usability score may suit advanced users, while balanced scores fit general consumers.</li>
+<li>We audit VPNs objectively, following a documented <a href="https://hushfleet.com/methodology">VPN scoring methodology</a>, without relying on marketing claims or user reviews.</li>
+</ul>
+<h2>Frequently asked questions</h2>
+<h3>Do you ever recommend a VPN?</h3>
+<p>Our register provides data to inform your choice; we do not make direct recommendations. The responsibility for selecting a service remains with the reader, guided by the raw scores and the audit notes we publish.</p>
+<h3>Is your scoring based on user reviews?</h3>
+<p>No. Our scoring is based on objective technical audits, policy analysis, and repeatable performance tests. User feedback may be quoted for context but does not influence the numeric scores.</p>
+<h3>How often are VPNs re-scored?</h3>
+<p>We re-evaluate VPNs on a rolling basis, typically every six months, and immediately after any significant service change—such as the addition of a new protocol, a jurisdictional shift, or the release of a new third-party audit. This ensures the scores remain reflective of the current product.</p>
+<hr />
+<p><em>This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.</em></p></article></main>
+<footer class="site">This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.<br>© 2026 Quiet Wire</footer>
+</div></body></html>
