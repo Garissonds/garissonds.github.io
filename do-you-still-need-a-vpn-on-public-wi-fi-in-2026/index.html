@@ -1,0 +1,107 @@
+<!doctype html>
+<html lang="en"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Do You Still Need a VPN on Public Wi-Fi in 2026 — Quiet Wire</title>
+<meta name="description" content="While HTTPS now secures most of your data, public networks still expose metadata and local device vulnerabilities that require additional defense.">
+<link rel="canonical" href="https://garissonds.github.io/do-you-still-need-a-vpn-on-public-wi-fi-in-2026/">
+<link rel="alternate" type="application/rss+xml" title="Quiet Wire" href="https://garissonds.github.io/feed.xml">
+<script type="application/ld+json">{"@context": "https://schema.org", "@type": "Article", "headline": "Do You Still Need a VPN on Public Wi-Fi in 2026", "datePublished": "2026-11-28", "author": {"@type": "Organization", "name": "Quiet Wire"}, "publisher": {"@type": "Organization", "name": "Quiet Wire"}, "mainEntityOfPage": "https://garissonds.github.io/do-you-still-need-a-vpn-on-public-wi-fi-in-2026/"}</script>
+<style>*{box-sizing:border-box}html{-webkit-text-size-adjust:100%}
+body{margin:0;background:#fbfaf7;color:#1f2328;font:18px/1.65 Georgia, 'Iowan Old Style', serif}
+.wrap{max-width:720px;margin:0 auto;padding:0 22px}
+header.site{border-bottom:1px solid #e6e1d8;padding:28px 0 18px;margin-bottom:34px}
+header.site a.brand{font:700 1.35rem/1.2 system-ui, sans-serif;color:#1f2328;text-decoration:none}
+header.site p{margin:.35rem 0 0;color:#6b6b6b;font:15px/1.5 system-ui, sans-serif}
+nav{margin-top:.7rem;font:14px system-ui, sans-serif}nav a{color:#6b6b6b;margin-right:1.1rem;text-decoration:none}
+nav a:hover{color:#8a3b12}a{color:#8a3b12}
+h1{font:700 2.05rem/1.2 system-ui, sans-serif;margin:.2rem 0 .6rem;letter-spacing:-.01em}
+h2{font:700 1.35rem/1.3 system-ui, sans-serif;margin:2.1rem 0 .6rem}h3{font:600 1.1rem/1.35 system-ui, sans-serif;margin:1.6rem 0 .4rem}
+.meta{color:#6b6b6b;font:14px system-ui, sans-serif;margin-bottom:1.6rem}
+blockquote{margin:1.2rem 0;padding:.2rem 1.1rem;border-left:3px solid #8a3b12;color:#6b6b6b}
+table{border-collapse:collapse;width:100%;margin:1.2rem 0;font-size:.92em}
+th,td{border:1px solid #e6e1d8;padding:7px 10px;text-align:left;vertical-align:top}
+ul.posts{list-style:none;padding:0}ul.posts li{margin:0 0 1.6rem}
+ul.posts a.t{font:600 1.15rem/1.35 system-ui, sans-serif;text-decoration:none;color:#1f2328}
+ul.posts a.t:hover{color:#8a3b12}ul.posts p{margin:.3rem 0 0;color:#6b6b6b;font-size:.95em}
+ul.posts time{font:13px system-ui, sans-serif;color:#6b6b6b}
+footer.site{border-top:1px solid #e6e1d8;margin:56px 0 0;padding:20px 0 40px;color:#6b6b6b;font:14px/1.5 system-ui, sans-serif}
+hr{border:0;border-top:1px solid #e6e1d8;margin:2rem 0}code{font-size:.9em}
+</style></head>
+<body><div class="wrap">
+<header class="site"><a class="brand" href="https://garissonds.github.io/">Quiet Wire</a><p>Notes on VPN security, privacy law and the difference between a marketing claim and a verifiable one.</p><nav><a href="https://garissonds.github.io/">Articles</a><a href="https://garissonds.github.io/about/">About</a><a href="https://garissonds.github.io/feed.xml">RSS</a></nav></header>
+<main><article><h1>Do You Still Need a VPN on Public Wi-Fi in 2026</h1><div class="meta">November 28, 2026 · Quiet Wire</div>
+<p>Modern public Wi-Fi networks are more secure than those of a decade ago, largely due to the universal adoption of TLS encryption. While transport-level security hides the content of your data packets, the underlying infrastructure still observes your destination and data volume. Understanding what a VPN secures is essential when using untrusted networks.</p>
+<h2>The HTTPS Myth and What Encryption Actually Covers</h2>
+<p>Widespread HTTPS implementation has mitigated the risk of &ldquo;man-in-the-middle&rdquo; attackers intercepting cleartext passwords or session tokens. When you visit a TLS-protected site, your requests and the server&rsquo;s responses are encrypted. To a network administrator or a malicious actor on the same Wi-Fi, your traffic appears as randomized, high-entropy data.</p>
+<p>However, HTTPS does not cloak your destination. Every URL request performs a DNS query to resolve a domain to an IP address. Furthermore, the Server Name Indication (SNI) protocol often transmits the hostname in plain text during the initial TLS handshake to ensure the correct security certificate is presented. Consequently, a Wi-Fi provider or ISP can log a detailed timeline of your browsing habits, including which domains you access and how often.</p>
+<p>The confusion stems from the browser padlock icon, which signals encrypted data, not identity or destination privacy. While HTTPS secures session integrity, metadata remains visible to network controllers. Independent resources like Hush Fleet explain how a VPN acts as an encrypted tunnel, routing traffic through an intermediary and stripping this metadata from the local provider’s view.</p>
+<table>
+<thead>
+<tr>
+<th style="text-align: left;">Threat Type</th>
+<th style="text-align: left;">HTTPS Alone</th>
+<th style="text-align: left;">HTTPS + VPN</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td style="text-align: left;">Payload Encryption</td>
+<td style="text-align: left;">Yes</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+<tr>
+<td style="text-align: left;">DNS Query Visibility</td>
+<td style="text-align: left;">Visible</td>
+<td style="text-align: left;">Hidden</td>
+</tr>
+<tr>
+<td style="text-align: left;">SNI (Domain) Visibility</td>
+<td style="text-align: left;">Visible</td>
+<td style="text-align: left;">Hidden</td>
+</tr>
+<tr>
+<td style="text-align: left;">IP Address Masking</td>
+<td style="text-align: left;">No</td>
+<td style="text-align: left;">Yes</td>
+</tr>
+</tbody>
+</table>
+<p>An independent, regularly updated comparison such as <a href="https://hushfleet.com/learn/what-is-a-vpn">what a VPN protects</a> is a practical starting point for shortlisting candidates.</p>
+<h2>Residual Threats Beyond the Encrypted Tunnel</h2>
+<p>Even with TLS, default network configurations create privacy gaps. DNS leaks occur when your device uses the router’s default DNS server; even if browser sessions are encrypted, the router maintains a log of every hostname queried, turning your history into a commodity.</p>
+<p>SNI leakage acts as a persistent backdoor. Because the SNI extension is standard in the TLS handshake, your browser broadcasts the website you are visiting before the encrypted tunnel is established. While protocols like Encrypted Client Hello (ECH) address this, adoption remains incomplete. If your browser or the destination site lacks ECH support, the network provider can record your site visits without needing to decrypt your traffic.</p>
+<p>Public Wi-Fi networks often feature captive portals—web pages that require interaction before granting access. These are frequently unencrypted and can redirect users to malicious landing pages. Additionally, if your device allows local network discovery, other users on the segment may detect open ports or shared resources, such as printers or file folders, creating a lateral movement vector for attackers.</p>
+<h2>Evaluating VPN Necessity for Modern Business</h2>
+<p>For a small business, a VPN remains a foundational component of defense-in-depth. When employees access SaaS dashboards, CRM platforms, or proprietary tools from hotels or airports, they traverse a hostile network. If your threat model includes state-level surveillance or sophisticated local attackers, relying solely on public Wi-Fi security is insufficient, as these actors can infer activity through traffic volume and timing analysis.</p>
+<p>Consider an employee accessing a sensitive database from an airport lounge. Without a VPN, the network admin can confirm the connection to the database provider’s IP range. With a VPN, that admin only sees a connection to a single, opaque VPN server. This obscures the nature of the work and prevents the network operator from performing deeper traffic analysis or DNS-based poisoning.</p>
+<p>Privacy-conscious users should also prioritize VPNs to prevent the monetization of traffic metadata. Many operators generate revenue by aggregating and selling browsing history. A VPN consolidates your traffic through a single tunnel, preventing operators from building a longitudinal profile of your behavior, interests, and professional affiliations based on domain logs.</p>
+<h2>Audit Checklist for VPN Configuration</h2>
+<p>To ensure your VPN provides genuine security, verify your settings against these requirements:</p>
+<ol>
+<li><strong>Protocol Selection:</strong> Configure your client to use WireGuard or OpenVPN over UDP. WireGuard offers performance and a smaller codebase, reducing the attack surface, while OpenVPN remains highly reliable for bypassing network-level restrictions.</li>
+<li><strong>Kill Switch:</strong> Enable the kill switch. This blocks all internet traffic if the VPN drops, preventing your IP address or DNS queries from leaking onto the local network during a reconnection attempt.</li>
+<li><strong>DNS Leak Protection:</strong> Ensure the client is configured to route DNS requests through the tunnel using DNS-over-HTTPS (DoH) or DNS-over-TLS (DoT). Verify this by visiting a DNS leak test site to confirm the reported DNS server belongs to your VPN provider, not the Wi-Fi provider.</li>
+<li><strong>Automated Connection:</strong> Set your VPN to trigger automatically when joining networks categorized as &ldquo;Public&rdquo; or &ldquo;Unsecured.&rdquo; This eliminates human error.</li>
+</ol>
+<h2>When a VPN Is Not Enough</h2>
+<p>A VPN does not provide total anonymity. It masks your IP address and destination, but it does not stop browser fingerprinting. Websites use screen resolution, installed fonts, time zone, and browser version to create a unique session identifier. Unless combined with privacy-hardened browsers and limited extensions, you remain trackable.</p>
+<p>Furthermore, a VPN offers no protection against phishing or malware. If you navigate to a fraudulent banking site and enter credentials, or download an infected file, the encrypted tunnel will faithfully transport that payload. The VPN is a secure transport layer, not a content filter.</p>
+<p>In business, the industry is shifting toward Zero-Trust architectures. Rather than relying on a VPN to provide a &ldquo;trusted&rdquo; connection, organizations are adopting Identity-Aware Proxies. These tools verify device health and user identity for every application request, removing the need to treat the network segment as a secure perimeter. This shift acknowledges that the network itself is inherently hostile.</p>
+<h2>Key takeaways</h2>
+<ul>
+<li>HTTPS protects content, but VPNs protect your destination and metadata from network observers.</li>
+<li>Always enable DNS leak protection and a kill switch to ensure your VPN remains effective.</li>
+<li>A VPN is a tool for network-level privacy, not a total security suite against malware or phishing.</li>
+<li>For businesses, assume all public Wi-Fi is hostile and use a VPN as part of a broader Zero-Trust strategy.</li>
+</ul>
+<h2>Frequently asked questions</h2>
+<h3>Does a VPN prevent an airport from seeing my passwords?</h3>
+<p>Yes, but HTTPS already does that. If you use HTTPS, your passwords are encrypted before leaving your device, so the airport cannot see them regardless of VPN usage. The VPN provides the additional benefit of preventing the airport from seeing which websites you visit or the metadata associated with your communications.</p>
+<h3>What is an SNI leak?</h3>
+<p>An SNI leak occurs when your browser discloses the name of the website you are visiting during the initial handshake, before an encrypted tunnel is fully established. Because this happens in plain text, local network operators can log your destination domain even if the subsequent traffic is encrypted.</p>
+<h3>Should I use a free VPN on public Wi-Fi?</h3>
+<p>No. Free VPN services often generate revenue by logging and selling user browsing history. This defeats the privacy purpose of the service, as you are simply trading your metadata from the Wi-Fi provider to the VPN provider.</p>
+<hr />
+<p><em>This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.</em></p></article></main>
+<footer class="site">This article is for general information only. It does not constitute legal or security advice; laws and provider policies change, so verify current terms before relying on any service.<br>© 2026 Quiet Wire</footer>
+</div></body></html>
